@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ClickerTG Game</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body {
+            background: radial-gradient(circle, #2c3e50, #000);
+            color: white; text-align: center; margin: 0; overflow: hidden;
+            height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            font-family: sans-serif;
+        }
+        .stats { font-size: 32px; font-weight: bold; margin-bottom: 20px; color: #f1c40f; }
+        #coin {
+            width: 200px; cursor: pointer; transition: transform 0.1s;
+            user-select: none; -webkit-tap-highlight-color: transparent;
+        }
+        #coin:active { transform: scale(0.95); }
+        .btn {
+            margin-top: 40px; padding: 12px 24px; background: #27ae60;
+            border: none; color: white; border-radius: 12px; font-weight: bold; cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="stats">💰 <span id="balance">0</span></div>
+    <img src="https://cdn-icons-png.flaticon.com/512/5408/5408431.png" id="coin" onclick="clickCoin()">
+    <button class="btn" onclick="sendToBot()">PUANI KAYDET VE ÇIK</button>
+
+    <script>
+        let tg = window.Telegram.WebApp;
+        let score = 0;
+        tg.expand();
+
+        function clickCoin() {
+            score++;
+            document.getElementById('balance').innerText = score;
+            if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
+        }
+
+        function sendToBot() {
+            tg.sendData(score.toString());
+        }
+    </script>
+</body>
+</html>
