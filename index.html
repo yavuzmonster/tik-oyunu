@@ -8,40 +8,85 @@
     <style>
         body {
             background: radial-gradient(circle, #2c3e50, #000);
-            color: white; text-align: center; margin: 0; overflow: hidden;
-            height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            color: white; 
+            text-align: center; 
+            margin: 0; 
+            overflow: hidden;
+            height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center;
             font-family: sans-serif;
+            user-select: none;
         }
-        .stats { font-size: 32px; font-weight: bold; margin-bottom: 20px; color: #f1c40f; }
+        .stats { 
+            font-size: 40px; 
+            font-weight: bold; 
+            margin-bottom: 20px; 
+            color: #f1c40f; 
+            text-shadow: 0 0 10px rgba(241, 196, 15, 0.5);
+        }
         #coin {
-            width: 200px; cursor: pointer; transition: transform 0.1s;
-            user-select: none; -webkit-tap-highlight-color: transparent;
+            width: 220px; 
+            cursor: pointer; 
+            transition: transform 0.05s;
+            -webkit-tap-highlight-color: transparent;
         }
-        #coin:active { transform: scale(0.95); }
+        #coin:active { 
+            transform: scale(0.90); 
+        }
         .btn {
-            margin-top: 40px; padding: 12px 24px; background: #27ae60;
-            border: none; color: white; border-radius: 12px; font-weight: bold; cursor: pointer;
+            margin-top: 40px; 
+            padding: 15px 30px; 
+            background: #27ae60;
+            border: none; 
+            color: white; 
+            border-radius: 15px; 
+            font-size: 18px;
+            font-weight: bold; 
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.4);
+        }
+        .btn:active {
+            background: #2ecc71;
+            transform: translateY(2px);
         }
     </style>
 </head>
 <body>
     <div class="stats">💰 <span id="balance">0</span></div>
+    
     <img src="https://cdn-icons-png.flaticon.com/512/5408/5408431.png" id="coin" onclick="clickCoin()">
+    
     <button class="btn" onclick="sendToBot()">PUANI KAYDET VE ÇIK</button>
 
     <script>
         let tg = window.Telegram.WebApp;
         let score = 0;
+
+        // Uygulamayı tam ekran yap
         tg.expand();
 
         function clickCoin() {
             score++;
             document.getElementById('balance').innerText = score;
-            if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
+            
+            // Titreşim desteği (Varsa çalışır)
+            if (tg.HapticFeedback) {
+                tg.HapticFeedback.impactOccurred('medium');
+            }
         }
 
         function sendToBot() {
-            tg.sendData(score.toString());
+            // Puan 0'dan büyükse bota gönder ve kapat
+            if (score > 0) {
+                tg.sendData(score.toString());
+                tg.close();
+            } else {
+                // Puan yoksa sadece kapat
+                tg.close();
+            }
         }
     </script>
 </body>
